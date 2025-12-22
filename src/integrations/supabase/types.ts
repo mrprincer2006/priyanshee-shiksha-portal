@@ -14,7 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      fee_records: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          month: string
+          payment_date: string | null
+          status: string
+          student_id: string
+          updated_at: string
+          user_id: string
+          year: number
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          month: string
+          payment_date?: string | null
+          status?: string
+          student_id: string
+          updated_at?: string
+          user_id: string
+          year: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          month?: string
+          payment_date?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+          user_id?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fee_records_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          admission_date: string
+          class: string
+          created_at: string
+          father_name: string
+          id: string
+          mobile: string
+          name: string
+          profile_image: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admission_date?: string
+          class: string
+          created_at?: string
+          father_name: string
+          id?: string
+          mobile: string
+          name: string
+          profile_image?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admission_date?: string
+          class?: string
+          created_at?: string
+          father_name?: string
+          id?: string
+          mobile?: string
+          name?: string
+          profile_image?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

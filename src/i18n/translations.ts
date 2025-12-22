@@ -21,6 +21,16 @@ export const translations = {
       loggingIn: "Signing in...",
       invalidCredentials: "Invalid email or password",
       loginSuccess: "Login successful!",
+      signup: "Sign Up",
+      createAccount: "Create Account",
+      signupToContinue: "Register to start managing your coaching center",
+      signupButton: "Create Account",
+      signingUp: "Creating account...",
+      signupSuccess: "Account created successfully!",
+      signupError: "Failed to create account",
+      emailAlreadyExists: "This email is already registered",
+      passwordTooShort: "Password must be at least 6 characters",
+      passwordHint: "Minimum 6 characters",
       
       // Dashboard
       dashboard: "Dashboard",
@@ -147,6 +157,16 @@ export const translations = {
       loggingIn: "लॉगिन हो रहा है...",
       invalidCredentials: "गलत ईमेल या पासवर्ड",
       loginSuccess: "लॉगिन सफल!",
+      signup: "साइन अप",
+      createAccount: "खाता बनाएं",
+      signupToContinue: "अपना कोचिंग सेंटर प्रबंधित करने के लिए पंजीकरण करें",
+      signupButton: "खाता बनाएं",
+      signingUp: "खाता बना रहा है...",
+      signupSuccess: "खाता सफलतापूर्वक बनाया गया!",
+      signupError: "खाता बनाने में विफल",
+      emailAlreadyExists: "यह ईमेल पहले से पंजीकृत है",
+      passwordTooShort: "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए",
+      passwordHint: "न्यूनतम 6 अक्षर",
       
       // Dashboard
       dashboard: "डैशबोर्ड",
