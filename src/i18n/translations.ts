@@ -124,6 +124,9 @@ export const translations = {
       checkFeeStatus: "Check Fee Status",
       enterMobileToCheck: "Enter registered mobile number to check fee status",
       search: "Search",
+      searching: "Searching...",
+      searchError: "Failed to search. Please try again.",
+      invalidMobile: "Please enter a valid 10-digit mobile number",
       totalPaid: "Total Paid",
       totalPending: "Total Pending",
       
@@ -260,6 +263,9 @@ export const translations = {
       checkFeeStatus: "शुल्क स्थिति जांचें",
       enterMobileToCheck: "शुल्क स्थिति जांचने के लिए पंजीकृत मोबाइल नंबर दर्ज करें",
       search: "खोजें",
+      searching: "खोज रहा है...",
+      searchError: "खोज विफल। कृपया पुनः प्रयास करें।",
+      invalidMobile: "कृपया एक वैध 10-अंकीय मोबाइल नंबर दर्ज करें",
       totalPaid: "कुल भुगतान",
       totalPending: "कुल बकाया",
       
