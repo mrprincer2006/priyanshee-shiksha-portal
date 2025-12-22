@@ -1,57 +1,93 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Phone, User, GraduationCap, IndianRupee, Calendar } from 'lucide-react';
+import { Search, Phone, GraduationCap, IndianRupee, Calendar, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LanguageToggle from '@/components/LanguageToggle';
-import { mockStudents, mockFeeRecords } from '@/lib/mockData';
-import { Student, FeeRecord } from '@/lib/types';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import logo from '@/assets/logo.png';
+
+interface FeeRecord {
+  month: string;
+  year: number;
+  amount: number;
+  status: string;
+}
+
+interface StudentResult {
+  id: string;
+  name: string;
+  class: string;
+  fees: FeeRecord[];
+}
 
 const FeeCheck = () => {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const [mobileNumber, setMobileNumber] = useState('');
-  const [searchResults, setSearchResults] = useState<Student[]>([]);
+  const [searchResults, setSearchResults] = useState<StudentResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedMobile = mobileNumber.trim();
-    if (trimmedMobile.length >= 10) {
-      const results = mockStudents.filter(
-        (student) => student.mobile.includes(trimmedMobile)
-      );
-      setSearchResults(results);
+    
+    if (trimmedMobile.length < 10) {
+      toast({
+        title: t('error'),
+        description: t('invalidMobile'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setHasSearched(false);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('check-fee-status', {
+        body: { mobile: trimmedMobile }
+      });
+
+      if (error) {
+        console.error('Error checking fee status:', error);
+        toast({
+          title: t('error'),
+          description: t('searchError'),
+          variant: 'destructive',
+        });
+        setSearchResults([]);
+      } else {
+        setSearchResults(data.students || []);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: t('error'),
+        description: t('searchError'),
+        variant: 'destructive',
+      });
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
       setHasSearched(true);
     }
   };
 
-  const getStudentFees = (studentId: string): FeeRecord[] => {
-    return mockFeeRecords.filter((f) => f.studentId === studentId);
-  };
-
-  const getTotalPending = (studentId: string): number => {
-    return mockFeeRecords
-      .filter((f) => f.studentId === studentId && f.status === 'unpaid')
+  const getTotalPending = (fees: FeeRecord[]): number => {
+    return fees
+      .filter((f) => f.status === 'unpaid')
       .reduce((sum, f) => sum + f.amount, 0);
   };
 
-  const getTotalPaid = (studentId: string): number => {
-    return mockFeeRecords
-      .filter((f) => f.studentId === studentId && f.status === 'paid')
+  const getTotalPaid = (fees: FeeRecord[]): number => {
+    return fees
+      .filter((f) => f.status === 'paid')
       .reduce((sum, f) => sum + f.amount, 0);
   };
 
@@ -108,10 +144,19 @@ const FeeCheck = () => {
                 <Button
                   type="submit"
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  disabled={mobileNumber.length < 10}
+                  disabled={mobileNumber.length < 10 || isLoading}
                 >
-                  <Search className="h-4 w-4 mr-2" />
-                  {t('search')}
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      {t('searching')}
+                    </>
+                  ) : (
+                    <>
+                      <Search className="h-4 w-4 mr-2" />
+                      {t('search')}
+                    </>
+                  )}
                 </Button>
               </form>
             </CardContent>
@@ -119,7 +164,7 @@ const FeeCheck = () => {
         </div>
 
         {/* Results Section */}
-        {hasSearched && (
+        {hasSearched && !isLoading && (
           <div className="max-w-2xl mx-auto">
             {searchResults.length === 0 ? (
               <Card className="bg-card border-border">
@@ -130,33 +175,22 @@ const FeeCheck = () => {
             ) : (
               <div className="space-y-6">
                 {searchResults.map((student) => {
-                  const fees = getStudentFees(student.id);
-                  const totalPending = getTotalPending(student.id);
-                  const totalPaid = getTotalPaid(student.id);
+                  const totalPending = getTotalPending(student.fees);
+                  const totalPaid = getTotalPaid(student.fees);
 
                   return (
                     <Card key={student.id} className="bg-card border-border shadow-md overflow-hidden">
                       {/* Student Info Header */}
                       <div className="bg-primary/5 p-4 border-b border-border">
                         <div className="flex items-center gap-4">
-                          <Avatar className="h-16 w-16 border-2 border-primary/20">
-                            <AvatarImage src={student.profileImage} alt={student.name} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xl">
-                              {getInitials(student.name)}
-                            </AvatarFallback>
-                          </Avatar>
+                          <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                            <GraduationCap className="h-8 w-8 text-primary" />
+                          </div>
                           <div className="flex-1">
                             <h3 className="text-lg font-semibold text-foreground">{student.name}</h3>
-                            <div className="flex flex-wrap gap-3 mt-1 text-sm text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                <GraduationCap className="h-4 w-4" />
-                                {t(student.class)}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <User className="h-4 w-4" />
-                                {student.fatherName}
-                              </span>
-                            </div>
+                            <Badge variant="secondary" className="mt-1 bg-primary/10 text-primary border-0">
+                              {t(student.class)}
+                            </Badge>
                           </div>
                         </div>
                       </div>
@@ -183,13 +217,13 @@ const FeeCheck = () => {
                           <Calendar className="h-4 w-4 text-primary" />
                           {t('feeRecords')}
                         </h4>
-                        {fees.length === 0 ? (
+                        {student.fees.length === 0 ? (
                           <p className="text-sm text-muted-foreground">{t('noFeeRecords')}</p>
                         ) : (
                           <div className="space-y-2">
-                            {fees.map((fee) => (
+                            {student.fees.map((fee, index) => (
                               <div
-                                key={fee.id}
+                                key={index}
                                 className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
                               >
                                 <div className="flex items-center gap-3">
