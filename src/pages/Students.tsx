@@ -96,6 +96,14 @@ const Students = ({ onLogout }: StudentsProps) => {
     setShowStudentForm(true);
   };
 
+  const handleEditFee = (fee: FeeRecord) => {
+    setEditingFee(fee);
+    const student = students.find(s => s.id === fee.studentId);
+    setSelectedStudent(student || null);
+    setShowProfile(false);
+    setShowFeeForm(true);
+  };
+
   const handleDeleteStudent = (student: Student) => {
     setStudentToDelete(student);
   };
@@ -295,6 +303,7 @@ const Students = ({ onLogout }: StudentsProps) => {
         onClose={() => setShowProfile(false)}
         student={selectedStudent}
         feeRecords={feeRecords}
+        onEditFee={handleEditFee}
       />
 
       <StudentForm

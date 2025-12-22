@@ -9,6 +9,7 @@ import LanguageSelection from "./pages/LanguageSelection";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
+import FeeCheck from "./pages/FeeCheck";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -93,6 +94,7 @@ const App = () => {
                 )
               }
             />
+            <Route path="/fee-check" element={<FeeCheck />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
