@@ -1,0 +1,240 @@
+export const translations = {
+  en: {
+    translation: {
+      // Common
+      appName: "Priyanshee Shiksha Kendra",
+      tagline: "Strong Foundation for a Bright Future",
+      nurseryToClass6: "Nursery to Class 6",
+      
+      // Language Selection
+      selectLanguage: "Select Language",
+      continue: "Continue",
+      
+      // Auth
+      login: "Login",
+      logout: "Logout",
+      email: "Email",
+      password: "Password",
+      adminLogin: "Admin Login",
+      loginToContinue: "Login to manage students and fees",
+      loginButton: "Sign In",
+      loggingIn: "Signing in...",
+      invalidCredentials: "Invalid email or password",
+      loginSuccess: "Login successful!",
+      
+      // Dashboard
+      dashboard: "Dashboard",
+      totalStudents: "Total Students",
+      feesCollected: "Fees Collected",
+      pendingFees: "Pending Fees",
+      thisMonth: "This Month",
+      
+      // Students
+      students: "Students",
+      addStudent: "Add Student",
+      editStudent: "Edit Student",
+      studentName: "Student Name",
+      class: "Class",
+      fatherName: "Father's Name",
+      mobileNumber: "Mobile Number",
+      admissionDate: "Admission Date",
+      profileImage: "Profile Image",
+      uploadImage: "Upload Image",
+      viewProfile: "View Profile",
+      deleteStudent: "Delete Student",
+      confirmDelete: "Are you sure you want to delete this student?",
+      studentAdded: "Student added successfully!",
+      studentUpdated: "Student updated successfully!",
+      studentDeleted: "Student deleted successfully!",
+      noStudentsFound: "No students found",
+      searchByName: "Search by name...",
+      
+      // Classes
+      nursery: "Nursery",
+      lkg: "LKG",
+      ukg: "UKG",
+      class1: "Class 1",
+      class2: "Class 2",
+      class3: "Class 3",
+      class4: "Class 4",
+      class5: "Class 5",
+      class6: "Class 6",
+      allClasses: "All Classes",
+      
+      // Fees
+      feeManagement: "Fee Management",
+      feeRecords: "Fee Records",
+      addFee: "Add Fee Record",
+      editFee: "Edit Fee Record",
+      month: "Month",
+      year: "Year",
+      feeAmount: "Fee Amount",
+      feeStatus: "Status",
+      paymentDate: "Payment Date",
+      paid: "Paid",
+      unpaid: "Unpaid",
+      feeAdded: "Fee record added successfully!",
+      feeUpdated: "Fee record updated successfully!",
+      noFeeRecords: "No fee records found",
+      
+      // Months
+      january: "January",
+      february: "February",
+      march: "March",
+      april: "April",
+      may: "May",
+      june: "June",
+      july: "July",
+      august: "August",
+      september: "September",
+      october: "October",
+      november: "November",
+      december: "December",
+      
+      // Filters
+      filters: "Filters",
+      filterByClass: "Filter by Class",
+      filterByStatus: "Filter by Status",
+      filterByMonth: "Filter by Month",
+      allStatus: "All Status",
+      allMonths: "All Months",
+      clearFilters: "Clear Filters",
+      
+      // Actions
+      save: "Save",
+      cancel: "Cancel",
+      edit: "Edit",
+      delete: "Delete",
+      view: "View",
+      close: "Close",
+      export: "Export",
+      actions: "Actions",
+      
+      // Misc
+      loading: "Loading...",
+      error: "Error",
+      success: "Success",
+      welcome: "Welcome",
+      currency: "₹",
+    },
+  },
+  hi: {
+    translation: {
+      // Common
+      appName: "प्रियंशी शिक्षा केंद्र",
+      tagline: "उज्ज्वल भविष्य के लिए मजबूत नींव",
+      nurseryToClass6: "नर्सरी से कक्षा 6",
+      
+      // Language Selection
+      selectLanguage: "भाषा चुनें",
+      continue: "आगे बढ़ें",
+      
+      // Auth
+      login: "लॉगिन",
+      logout: "लॉगआउट",
+      email: "ईमेल",
+      password: "पासवर्ड",
+      adminLogin: "एडमिन लॉगिन",
+      loginToContinue: "छात्रों और शुल्क प्रबंधन के लिए लॉगिन करें",
+      loginButton: "लॉगिन करें",
+      loggingIn: "लॉगिन हो रहा है...",
+      invalidCredentials: "गलत ईमेल या पासवर्ड",
+      loginSuccess: "लॉगिन सफल!",
+      
+      // Dashboard
+      dashboard: "डैशबोर्ड",
+      totalStudents: "कुल छात्र",
+      feesCollected: "प्राप्त शुल्क",
+      pendingFees: "बकाया शुल्क",
+      thisMonth: "इस महीने",
+      
+      // Students
+      students: "छात्र",
+      addStudent: "छात्र जोड़ें",
+      editStudent: "छात्र संपादित करें",
+      studentName: "छात्र का नाम",
+      class: "कक्षा",
+      fatherName: "पिता का नाम",
+      mobileNumber: "मोबाइल नंबर",
+      admissionDate: "प्रवेश तिथि",
+      profileImage: "प्रोफाइल फोटो",
+      uploadImage: "फोटो अपलोड करें",
+      viewProfile: "प्रोफाइल देखें",
+      deleteStudent: "छात्र हटाएं",
+      confirmDelete: "क्या आप वाकई इस छात्र को हटाना चाहते हैं?",
+      studentAdded: "छात्र सफलतापूर्वक जोड़ा गया!",
+      studentUpdated: "छात्र सफलतापूर्वक अपडेट किया गया!",
+      studentDeleted: "छात्र सफलतापूर्वक हटा दिया गया!",
+      noStudentsFound: "कोई छात्र नहीं मिला",
+      searchByName: "नाम से खोजें...",
+      
+      // Classes
+      nursery: "नर्सरी",
+      lkg: "एलकेजी",
+      ukg: "यूकेजी",
+      class1: "कक्षा 1",
+      class2: "कक्षा 2",
+      class3: "कक्षा 3",
+      class4: "कक्षा 4",
+      class5: "कक्षा 5",
+      class6: "कक्षा 6",
+      allClasses: "सभी कक्षाएं",
+      
+      // Fees
+      feeManagement: "शुल्क प्रबंधन",
+      feeRecords: "शुल्क रिकॉर्ड",
+      addFee: "शुल्क रिकॉर्ड जोड़ें",
+      editFee: "शुल्क रिकॉर्ड संपादित करें",
+      month: "महीना",
+      year: "वर्ष",
+      feeAmount: "शुल्क राशि",
+      feeStatus: "स्थिति",
+      paymentDate: "भुगतान तिथि",
+      paid: "भुगतान हो चुका",
+      unpaid: "बकाया",
+      feeAdded: "शुल्क रिकॉर्ड सफलतापूर्वक जोड़ा गया!",
+      feeUpdated: "शुल्क रिकॉर्ड सफलतापूर्वक अपडेट किया गया!",
+      noFeeRecords: "कोई शुल्क रिकॉर्ड नहीं मिला",
+      
+      // Months
+      january: "जनवरी",
+      february: "फरवरी",
+      march: "मार्च",
+      april: "अप्रैल",
+      may: "मई",
+      june: "जून",
+      july: "जुलाई",
+      august: "अगस्त",
+      september: "सितंबर",
+      october: "अक्टूबर",
+      november: "नवंबर",
+      december: "दिसंबर",
+      
+      // Filters
+      filters: "फ़िल्टर",
+      filterByClass: "कक्षा के अनुसार",
+      filterByStatus: "स्थिति के अनुसार",
+      filterByMonth: "महीने के अनुसार",
+      allStatus: "सभी स्थिति",
+      allMonths: "सभी महीने",
+      clearFilters: "फ़िल्टर हटाएं",
+      
+      // Actions
+      save: "सहेजें",
+      cancel: "रद्द करें",
+      edit: "संपादित करें",
+      delete: "हटाएं",
+      view: "देखें",
+      close: "बंद करें",
+      export: "निर्यात करें",
+      actions: "कार्रवाई",
+      
+      // Misc
+      loading: "लोड हो रहा है...",
+      error: "त्रुटि",
+      success: "सफल",
+      welcome: "स्वागत है",
+      currency: "₹",
+    },
+  },
+};
