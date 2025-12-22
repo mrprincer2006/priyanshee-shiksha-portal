@@ -110,6 +110,13 @@ export const translations = {
       export: "Export",
       actions: "Actions",
       
+      // Public Fee Check
+      checkFeeStatus: "Check Fee Status",
+      enterMobileToCheck: "Enter registered mobile number to check fee status",
+      search: "Search",
+      totalPaid: "Total Paid",
+      totalPending: "Total Pending",
+      
       // Misc
       loading: "Loading...",
       error: "Error",
@@ -228,6 +235,13 @@ export const translations = {
       close: "बंद करें",
       export: "निर्यात करें",
       actions: "कार्रवाई",
+      
+      // Public Fee Check
+      checkFeeStatus: "शुल्क स्थिति जांचें",
+      enterMobileToCheck: "शुल्क स्थिति जांचने के लिए पंजीकृत मोबाइल नंबर दर्ज करें",
+      search: "खोजें",
+      totalPaid: "कुल भुगतान",
+      totalPending: "कुल बकाया",
       
       // Misc
       loading: "लोड हो रहा है...",

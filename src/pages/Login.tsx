@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Eye, EyeOff, Lock, Mail, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -121,7 +121,13 @@ const Login = ({ onLogin }: LoginProps) => {
               </Button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-border">
+            <div className="mt-6 pt-6 border-t border-border space-y-4">
+              <Link to="/fee-check" className="block">
+                <Button variant="outline" className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/5">
+                  <Search className="h-4 w-4" />
+                  {t('checkFeeStatus')}
+                </Button>
+              </Link>
               <p className="text-xs text-center text-muted-foreground">
                 Demo: admin@priyanshee.com / admin123
               </p>

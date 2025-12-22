@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { X, User, Phone, Calendar, GraduationCap } from 'lucide-react';
+import { User, Phone, Calendar, Edit } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,9 +16,10 @@ interface StudentProfileProps {
   onClose: () => void;
   student: Student | null;
   feeRecords: FeeRecord[];
+  onEditFee?: (fee: FeeRecord) => void;
 }
 
-const StudentProfile = ({ open, onClose, student, feeRecords }: StudentProfileProps) => {
+const StudentProfile = ({ open, onClose, student, feeRecords, onEditFee }: StudentProfileProps) => {
   const { t } = useTranslation();
 
   if (!student) return null;
@@ -110,15 +111,27 @@ const StudentProfile = ({ open, onClose, student, feeRecords }: StudentProfilePr
                         {t('currency')}{fee.amount}
                       </p>
                     </div>
-                    <Badge
-                      className={`${
-                        fee.status === 'paid'
-                          ? 'status-paid'
-                          : 'status-unpaid'
-                      } border`}
-                    >
-                      {t(fee.status)}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        className={`${
+                          fee.status === 'paid'
+                            ? 'status-paid'
+                            : 'status-unpaid'
+                        } border`}
+                      >
+                        {t(fee.status)}
+                      </Badge>
+                      {onEditFee && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEditFee(fee)}
+                          className="h-8 w-8 p-0 text-muted-foreground hover:bg-muted"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
