@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Users, IndianRupee, AlertCircle, TrendingUp, Plus } from 'lucide-react';
+import { Users, IndianRupee, AlertCircle, Plus, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import StatCard from '@/components/StatCard';
@@ -21,11 +21,33 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { mockStudents, mockFeeRecords } from '@/lib/mockData';
+import { supabase } from '@/integrations/supabase/client';
 import { Student, FeeRecord } from '@/lib/types';
 
 interface DashboardProps {
   onLogout: () => void;
+}
+
+interface DbStudent {
+  id: string;
+  user_id: string;
+  name: string;
+  class: string;
+  father_name: string;
+  mobile: string;
+  profile_image: string | null;
+  admission_date: string;
+}
+
+interface DbFeeRecord {
+  id: string;
+  student_id: string;
+  user_id: string;
+  month: string;
+  year: number;
+  amount: number;
+  status: string;
+  payment_date: string | null;
 }
 
 const Dashboard = ({ onLogout }: DashboardProps) => {
@@ -33,8 +55,9 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const [students, setStudents] = useState<Student[]>(mockStudents);
-  const [feeRecords, setFeeRecords] = useState<FeeRecord[]>(mockFeeRecords);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [feeRecords, setFeeRecords] = useState<FeeRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const [searchQuery, setSearchQuery] = useState('');
   const [classFilter, setClassFilter] = useState('all');
@@ -49,11 +72,83 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
 
   const currentMonth = new Date().toLocaleString('en', { month: 'long' }).toLowerCase();
+  const currentYear = new Date().getFullYear();
+
+  // Fetch data from database
+  const fetchData = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const [studentsResult, feesResult] = await Promise.all([
+        supabase.from('students').select('*').eq('user_id', user.id),
+        supabase.from('fee_records').select('*').eq('user_id', user.id)
+      ]);
+
+      if (studentsResult.data) {
+        const mappedStudents: Student[] = (studentsResult.data as DbStudent[]).map(s => ({
+          id: s.id,
+          name: s.name,
+          class: s.class,
+          fatherName: s.father_name,
+          mobile: s.mobile,
+          profileImage: s.profile_image || '',
+          admissionDate: s.admission_date
+        }));
+        setStudents(mappedStudents);
+      }
+
+      if (feesResult.data) {
+        const mappedFees: FeeRecord[] = (feesResult.data as DbFeeRecord[]).map(f => ({
+          id: f.id,
+          studentId: f.student_id,
+          month: f.month,
+          year: f.year,
+          amount: f.amount,
+          status: f.status as 'paid' | 'unpaid',
+          paymentDate: f.payment_date
+        }));
+        setFeeRecords(mappedFees);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Upload image to storage
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('student-profiles')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('student-profiles')
+        .getPublicUrl(filePath);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      return null;
+    }
+  };
 
   // Calculate stats
   const stats = useMemo(() => {
     const totalStudents = students.length;
-    const currentMonthFees = feeRecords.filter(f => f.month === 'december' && f.year === 2024);
+    const currentMonthFees = feeRecords.filter(f => f.month === currentMonth && f.year === currentYear);
     const feesCollected = currentMonthFees
       .filter(f => f.status === 'paid')
       .reduce((sum, f) => sum + f.amount, 0);
@@ -62,7 +157,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
       .reduce((sum, f) => sum + f.amount, 0);
 
     return { totalStudents, feesCollected, pendingFees };
-  }, [students, feeRecords]);
+  }, [students, feeRecords, currentMonth, currentYear]);
 
   // Filter students
   const filteredStudents = useMemo(() => {
@@ -70,7 +165,6 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
       const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesClass = classFilter === 'all' || student.class === classFilter;
       
-      // Status filter based on latest fee record
       let matchesStatus = true;
       if (statusFilter !== 'all') {
         const studentFees = feeRecords.filter(f => f.studentId === student.id);
@@ -97,36 +191,120 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
     setStudentToDelete(student);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (studentToDelete) {
-      setStudents(students.filter(s => s.id !== studentToDelete.id));
-      setFeeRecords(feeRecords.filter(f => f.studentId !== studentToDelete.id));
-      toast({
-        title: t('success'),
-        description: t('studentDeleted'),
-      });
+      try {
+        const { error } = await supabase
+          .from('students')
+          .delete()
+          .eq('id', studentToDelete.id);
+
+        if (error) throw error;
+
+        setStudents(students.filter(s => s.id !== studentToDelete.id));
+        setFeeRecords(feeRecords.filter(f => f.studentId !== studentToDelete.id));
+        toast({
+          title: t('success'),
+          description: t('studentDeleted'),
+        });
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        toast({
+          title: t('error'),
+          description: 'Failed to delete student',
+          variant: 'destructive',
+        });
+      }
       setStudentToDelete(null);
     }
   };
 
-  const handleSaveStudent = (studentData: Omit<Student, 'id'>) => {
-    if (editingStudent) {
-      setStudents(students.map(s => 
-        s.id === editingStudent.id ? { ...studentData, id: editingStudent.id } : s
-      ));
+  const handleSaveStudent = async (studentData: Omit<Student, 'id'>, imageFile?: File) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: t('error'),
+          description: 'Not authenticated',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      let profileImageUrl = studentData.profileImage;
+      
+      if (imageFile) {
+        const uploadedUrl = await uploadImage(imageFile);
+        if (uploadedUrl) {
+          profileImageUrl = uploadedUrl;
+        }
+      }
+
+      if (editingStudent) {
+        const { error } = await supabase
+          .from('students')
+          .update({
+            name: studentData.name,
+            class: studentData.class,
+            father_name: studentData.fatherName,
+            mobile: studentData.mobile,
+            admission_date: studentData.admissionDate,
+            profile_image: profileImageUrl || null,
+          })
+          .eq('id', editingStudent.id);
+
+        if (error) throw error;
+
+        setStudents(students.map(s => 
+          s.id === editingStudent.id 
+            ? { ...studentData, id: editingStudent.id, profileImage: profileImageUrl } 
+            : s
+        ));
+        toast({
+          title: t('success'),
+          description: t('studentUpdated'),
+        });
+      } else {
+        const { data, error } = await supabase
+          .from('students')
+          .insert({
+            user_id: user.id,
+            name: studentData.name,
+            class: studentData.class,
+            father_name: studentData.fatherName,
+            mobile: studentData.mobile,
+            admission_date: studentData.admissionDate,
+            profile_image: profileImageUrl || null,
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        const newStudent: Student = {
+          id: data.id,
+          name: data.name,
+          class: data.class,
+          fatherName: data.father_name,
+          mobile: data.mobile,
+          profileImage: data.profile_image || '',
+          admissionDate: data.admission_date,
+        };
+        setStudents([...students, newStudent]);
+        toast({
+          title: t('success'),
+          description: t('studentAdded'),
+        });
+      }
+      setEditingStudent(null);
+    } catch (error) {
+      console.error('Error saving student:', error);
       toast({
-        title: t('success'),
-        description: t('studentUpdated'),
-      });
-    } else {
-      const newStudent = { ...studentData, id: Date.now().toString() };
-      setStudents([...students, newStudent]);
-      toast({
-        title: t('success'),
-        description: t('studentAdded'),
+        title: t('error'),
+        description: 'Failed to save student',
+        variant: 'destructive',
       });
     }
-    setEditingStudent(null);
   };
 
   const handleAddFee = (student: Student) => {
@@ -134,15 +312,62 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
     setShowFeeForm(true);
   };
 
-  const handleSaveFee = (feeData: Omit<FeeRecord, 'id'>) => {
-    const newFee = { ...feeData, id: Date.now().toString() };
-    setFeeRecords([newFee, ...feeRecords]);
-    toast({
-      title: t('success'),
-      description: t('feeAdded'),
-    });
-    setSelectedStudent(null);
+  const handleSaveFee = async (feeData: Omit<FeeRecord, 'id'>) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('fee_records')
+        .insert({
+          user_id: user.id,
+          student_id: feeData.studentId,
+          month: feeData.month,
+          year: feeData.year,
+          amount: feeData.amount,
+          status: feeData.status,
+          payment_date: feeData.paymentDate || null,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const newFee: FeeRecord = {
+        id: data.id,
+        studentId: data.student_id,
+        month: data.month,
+        year: data.year,
+        amount: data.amount,
+        status: data.status as 'paid' | 'unpaid',
+        paymentDate: data.payment_date,
+      };
+      setFeeRecords([newFee, ...feeRecords]);
+      toast({
+        title: t('success'),
+        description: t('feeAdded'),
+      });
+      setSelectedStudent(null);
+    } catch (error) {
+      console.error('Error saving fee:', error);
+      toast({
+        title: t('error'),
+        description: 'Failed to save fee record',
+        variant: 'destructive',
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header onLogout={onLogout} />
+        <div className="flex items-center justify-center h-[60vh]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
