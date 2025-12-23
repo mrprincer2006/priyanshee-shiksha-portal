@@ -4,7 +4,7 @@ export const translations = {
       // Common
       appName: "Priyanshee Shiksha Kendra",
       tagline: "Strong Foundation for a Bright Future",
-      nurseryToClass6: "Nursery to Class 6",
+      nurseryToClass6: "Nursery to Class 10",
       
       // Language Selection
       selectLanguage: "Select Language",
@@ -62,6 +62,7 @@ export const translations = {
       studentDeleted: "Student deleted successfully!",
       noStudentsFound: "No students found",
       searchByName: "Search by name...",
+      monthlyFeeAmount: "Monthly Fee",
       
       // Classes
       nursery: "Nursery",
@@ -73,6 +74,10 @@ export const translations = {
       class4: "Class 4",
       class5: "Class 5",
       class6: "Class 6",
+      class7: "Class 7",
+      class8: "Class 8",
+      class9: "Class 9",
+      class10: "Class 10",
       allClasses: "All Classes",
       
       // Fees
@@ -90,6 +95,32 @@ export const translations = {
       feeAdded: "Fee record added successfully!",
       feeUpdated: "Fee record updated successfully!",
       noFeeRecords: "No fee records found",
+      generateFees: "Generate Fees",
+      generating: "Generating...",
+      feesGenerated: "{{count}} monthly fees generated!",
+      allFeesExist: "All 12 monthly fees already exist for this year",
+      noFeesGenerated: "No fees generated yet",
+      clickGenerateFees: "Click 'Generate Fees' to create monthly fee records",
+      monthsPaid: "Months Paid",
+      monthsUnpaid: "Months Unpaid",
+      feeMarkedPaid: "Fee marked as paid!",
+      manageFees: "Manage Fees",
+      
+      // QR Payment
+      qrPayment: "QR Payment",
+      payByQR: "Pay via QR",
+      markPaidCash: "Cash Paid",
+      scanQRToPay: "Scan this QR code with any UPI app to pay",
+      upiId: "UPI ID",
+      upiCopied: "UPI ID copied to clipboard!",
+      openPaymentApp: "Open Payment App",
+      confirmPayment: "I Have Paid",
+      transactionId: "Transaction ID",
+      enterTransactionId: "Enter UPI transaction ID",
+      transactionIdHint: "You can find this in your payment app after payment",
+      confirmPaid: "Confirm Payment",
+      paymentSuccess: "Payment recorded successfully!",
+      back: "Back",
       
       // Months
       january: "January",
@@ -140,6 +171,10 @@ export const translations = {
       success: "Success",
       welcome: "Welcome",
       currency: "₹",
+      info: "Info",
+      fetchError: "Failed to fetch data",
+      generateError: "Failed to generate fees",
+      updateError: "Failed to update",
     },
   },
   hi: {
@@ -147,7 +182,7 @@ export const translations = {
       // Common
       appName: "प्रियंशी शिक्षा केंद्र",
       tagline: "उज्ज्वल भविष्य के लिए मजबूत नींव",
-      nurseryToClass6: "नर्सरी से कक्षा 6",
+      nurseryToClass6: "नर्सरी से कक्षा 10",
       
       // Language Selection
       selectLanguage: "भाषा चुनें",
@@ -205,6 +240,7 @@ export const translations = {
       studentDeleted: "छात्र सफलतापूर्वक हटा दिया गया!",
       noStudentsFound: "कोई छात्र नहीं मिला",
       searchByName: "नाम से खोजें...",
+      monthlyFeeAmount: "मासिक शुल्क",
       
       // Classes
       nursery: "नर्सरी",
@@ -216,6 +252,10 @@ export const translations = {
       class4: "कक्षा 4",
       class5: "कक्षा 5",
       class6: "कक्षा 6",
+      class7: "कक्षा 7",
+      class8: "कक्षा 8",
+      class9: "कक्षा 9",
+      class10: "कक्षा 10",
       allClasses: "सभी कक्षाएं",
       
       // Fees
@@ -233,6 +273,32 @@ export const translations = {
       feeAdded: "शुल्क रिकॉर्ड सफलतापूर्वक जोड़ा गया!",
       feeUpdated: "शुल्क रिकॉर्ड सफलतापूर्वक अपडेट किया गया!",
       noFeeRecords: "कोई शुल्क रिकॉर्ड नहीं मिला",
+      generateFees: "शुल्क जनरेट करें",
+      generating: "जनरेट हो रहा है...",
+      feesGenerated: "{{count}} मासिक शुल्क जनरेट हुए!",
+      allFeesExist: "इस वर्ष के लिए सभी 12 मासिक शुल्क पहले से मौजूद हैं",
+      noFeesGenerated: "अभी तक कोई शुल्क जनरेट नहीं हुआ",
+      clickGenerateFees: "मासिक शुल्क रिकॉर्ड बनाने के लिए 'शुल्क जनरेट करें' पर क्लिक करें",
+      monthsPaid: "भुगतान महीने",
+      monthsUnpaid: "बकाया महीने",
+      feeMarkedPaid: "शुल्क भुगतान हो चुका!",
+      manageFees: "शुल्क प्रबंधित करें",
+      
+      // QR Payment
+      qrPayment: "QR भुगतान",
+      payByQR: "QR से भुगतान",
+      markPaidCash: "नकद भुगतान",
+      scanQRToPay: "भुगतान करने के लिए किसी भी UPI ऐप से इस QR कोड को स्कैन करें",
+      upiId: "UPI आईडी",
+      upiCopied: "UPI आईडी कॉपी हो गई!",
+      openPaymentApp: "भुगतान ऐप खोलें",
+      confirmPayment: "मैंने भुगतान कर दिया",
+      transactionId: "लेनदेन आईडी",
+      enterTransactionId: "UPI लेनदेन आईडी दर्ज करें",
+      transactionIdHint: "आप इसे भुगतान के बाद अपने भुगतान ऐप में पा सकते हैं",
+      confirmPaid: "भुगतान की पुष्टि करें",
+      paymentSuccess: "भुगतान सफलतापूर्वक दर्ज हुआ!",
+      back: "वापस",
       
       // Months
       january: "जनवरी",
@@ -283,6 +349,10 @@ export const translations = {
       success: "सफल",
       welcome: "स्वागत है",
       currency: "₹",
+      info: "जानकारी",
+      fetchError: "डेटा लाने में विफल",
+      generateError: "शुल्क जनरेट करने में विफल",
+      updateError: "अपडेट करने में विफल",
     },
   },
 };

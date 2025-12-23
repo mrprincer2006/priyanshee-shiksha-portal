@@ -19,10 +19,12 @@ export type Database = {
           amount: number
           created_at: string
           id: string
-          month: string
-          payment_date: string | null
+          month: number
+          paid_at: string | null
+          payment_method: string | null
           status: string
           student_id: string
+          transaction_id: string | null
           updated_at: string
           user_id: string
           year: number
@@ -31,10 +33,12 @@ export type Database = {
           amount?: number
           created_at?: string
           id?: string
-          month: string
-          payment_date?: string | null
+          month: number
+          paid_at?: string | null
+          payment_method?: string | null
           status?: string
           student_id: string
+          transaction_id?: string | null
           updated_at?: string
           user_id: string
           year: number
@@ -43,10 +47,12 @@ export type Database = {
           amount?: number
           created_at?: string
           id?: string
-          month?: string
-          payment_date?: string | null
+          month?: number
+          paid_at?: string | null
+          payment_method?: string | null
           status?: string
           student_id?: string
+          transaction_id?: string | null
           updated_at?: string
           user_id?: string
           year?: number
@@ -69,6 +75,7 @@ export type Database = {
           father_name: string
           id: string
           mobile: string
+          monthly_fee_amount: number
           name: string
           profile_image: string | null
           updated_at: string
@@ -81,6 +88,7 @@ export type Database = {
           father_name: string
           id?: string
           mobile: string
+          monthly_fee_amount?: number
           name: string
           profile_image?: string | null
           updated_at?: string
@@ -93,6 +101,7 @@ export type Database = {
           father_name?: string
           id?: string
           mobile?: string
+          monthly_fee_amount?: number
           name?: string
           profile_image?: string | null
           updated_at?: string

@@ -19,7 +19,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Student, CLASS_OPTIONS } from '@/lib/types';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 interface StudentFormProps {
@@ -44,6 +43,7 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
     mobile: '',
     admissionDate: new Date().toISOString().split('T')[0],
     profileImage: '',
+    monthlyFeeAmount: 500,
   });
 
   useEffect(() => {
@@ -55,6 +55,7 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
         mobile: student.mobile,
         admissionDate: student.admissionDate,
         profileImage: student.profileImage || '',
+        monthlyFeeAmount: student.monthlyFeeAmount || 500,
       });
       setImagePreview(student.profileImage || '');
     } else {
@@ -65,6 +66,7 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
         mobile: '',
         admissionDate: new Date().toISOString().split('T')[0],
         profileImage: '',
+        monthlyFeeAmount: 500,
       });
       setImagePreview('');
     }
@@ -74,7 +76,6 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         toast({
           title: t('error'),
@@ -84,7 +85,6 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
         return;
       }
       
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast({
           title: t('error'),
@@ -196,7 +196,7 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
               <SelectTrigger className="bg-background border-input">
                 <SelectValue placeholder={t('class')} />
               </SelectTrigger>
-              <SelectContent className="bg-card border-border">
+              <SelectContent className="bg-card border-border max-h-60">
                 {CLASS_OPTIONS.map((cls) => (
                   <SelectItem key={cls} value={cls}>
                     {t(cls)}
@@ -240,6 +240,20 @@ const StudentForm = ({ open, onClose, onSave, student }: StudentFormProps) => {
               value={formData.admissionDate}
               onChange={(e) => setFormData({ ...formData, admissionDate: e.target.value })}
               className="input-focus bg-background border-input"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="monthlyFeeAmount" className="text-foreground">{t('monthlyFeeAmount')} (₹)</Label>
+            <Input
+              id="monthlyFeeAmount"
+              type="number"
+              value={formData.monthlyFeeAmount}
+              onChange={(e) => setFormData({ ...formData, monthlyFeeAmount: parseInt(e.target.value) || 500 })}
+              placeholder="500"
+              className="input-focus bg-background border-input"
+              min={0}
               required
             />
           </div>
