@@ -91,8 +91,8 @@ const Filters = ({
             <SelectContent className="bg-card border-border">
               <SelectItem value="all">{t('allMonths')}</SelectItem>
               {MONTH_OPTIONS.map((month) => (
-                <SelectItem key={month} value={month}>
-                  {t(month)}
+                <SelectItem key={month.value} value={month.value.toString()}>
+                  {t(month.key)}
                 </SelectItem>
               ))}
             </SelectContent>
