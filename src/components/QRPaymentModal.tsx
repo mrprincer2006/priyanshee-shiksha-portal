@@ -22,7 +22,7 @@ interface QRPaymentModalProps {
 }
 
 // UPI configuration - can be customized
-const UPI_ID = "priyansheeshiksha@upi"; // Replace with actual UPI ID
+const UPI_ID = "9060633237@fam"; // Replace with actual UPI ID
 const PAYEE_NAME = "Priyanshee Shiksha Kendra";
 
 const QRPaymentModal = ({ open, onClose, fee, student, onPaymentComplete }: QRPaymentModalProps) => {
