@@ -64,6 +64,8 @@ const QRPaymentModal = ({ open, onClose, fee, student, onPaymentComplete }: QRPa
       return;
     }
     onPaymentComplete(transactionId.trim());
+    // Redirect student to Check Fee Status page instead of admin login
+    window.location.href = '/check-fee-status';
     setTransactionId('');
     setShowConfirm(false);
   };
