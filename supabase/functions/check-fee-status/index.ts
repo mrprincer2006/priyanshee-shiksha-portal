@@ -69,16 +69,16 @@ serve(async (req) => {
     const studentIds = students.map(s => s.id);
     const { data: feeRecords, error: feeError } = await supabase
       .from('fee_records')
-      .select('student_id, month, year, amount, status')
+      .select('id, student_id, month, year, amount, status')
       .in('student_id', studentIds)
       .order('year', { ascending: false })
-      .order('created_at', { ascending: false });
+      .order('month', { ascending: true });
 
     if (feeError) {
       console.error('Error fetching fee records:', feeError);
     }
 
-    // Combine data - only return necessary fields for fee checking
+    // Combine data - return necessary fields for fee checking and payment
     const result = students.map(student => ({
       id: student.id,
       name: student.name,
@@ -86,6 +86,7 @@ serve(async (req) => {
       fees: (feeRecords || [])
         .filter(f => f.student_id === student.id)
         .map(f => ({
+          id: f.id,
           month: f.month,
           year: f.year,
           amount: f.amount,
