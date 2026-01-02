@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageToggle from './LanguageToggle';
 import logo from '@/assets/logo.png';
@@ -19,15 +19,22 @@ const Header = ({ onLogout }: HeaderProps) => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/dashboard" className="flex items-center gap-3">
-          <img src={logo} alt="Priyanshee Shiksha Kendra" className="h-10 w-auto" />
+    <header className="sticky top-0 z-50 header-gradient border-b border-border/50 shadow-soft">
+      <div className="container mx-auto px-4 h-18 py-3 flex items-center justify-between">
+        <Link to="/dashboard" className="flex items-center gap-4 group">
+          <div className="relative">
+            <img 
+              src={logo} 
+              alt="Priyanshee Shiksha Kendra" 
+              className="h-12 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" 
+            />
+            <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-success rounded-full border-2 border-card animate-pulse-soft" />
+          </div>
           <div className="hidden sm:block">
-            <h1 className="text-lg font-semibold text-primary leading-tight">
+            <h1 className="text-xl font-bold gradient-text leading-tight transition-all duration-300 group-hover:scale-[1.02]">
               {t('appName')}
             </h1>
-            <p className="text-xs text-muted-foreground">{t('nurseryToClass6')}</p>
+            <p className="text-xs text-muted-foreground font-medium">{t('nurseryToClass6')}</p>
           </div>
         </Link>
 
@@ -40,7 +47,11 @@ const Header = ({ onLogout }: HeaderProps) => {
                 <Button
                   variant={isActive ? 'default' : 'ghost'}
                   size="sm"
-                  className={`gap-2 ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}`}
+                  className={`gap-2 rounded-xl font-semibold transition-all duration-300 ${
+                    isActive 
+                      ? 'btn-gradient-primary shadow-md' 
+                      : 'text-foreground hover:bg-primary/10 hover:text-primary'
+                  }`}
                 >
                   <Icon className="h-4 w-4" />
                   <span className="hidden sm:inline">{t(item.label)}</span>
@@ -55,7 +66,7 @@ const Header = ({ onLogout }: HeaderProps) => {
             variant="ghost"
             size="sm"
             onClick={onLogout}
-            className="gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            className="gap-2 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive font-semibold transition-all duration-300"
           >
             <LogOut className="h-4 w-4" />
             <span className="hidden sm:inline">{t('logout')}</span>
