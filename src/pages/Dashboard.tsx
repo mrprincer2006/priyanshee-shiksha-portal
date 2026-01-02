@@ -273,7 +273,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredStudents.map((student, index) => (
               <div key={student.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.05}s` }}>
-                <StudentCard student={student} onView={handleViewProfile} onEdit={handleEditStudent} onDelete={handleDeleteStudent} onManageFees={handleManageFees} />
+                <StudentCard student={student} onView={handleViewProfile} onEdit={handleEditStudent} onDelete={handleDeleteStudent} />
               </div>
             ))}
           </div>

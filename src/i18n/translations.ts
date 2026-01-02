@@ -164,6 +164,12 @@ export const translations = {
       invalidMobile: "Please enter a valid 10-digit mobile number",
       totalPaid: "Total Paid",
       totalPending: "Total Pending",
+      payNow: "Pay Now",
+      paymentRecorded: "Payment recorded successfully!",
+      paymentError: "Failed to record payment",
+      scanOrClick: "Scan QR or click to open payment app",
+      processing: "Processing...",
+      amount: "Amount",
       
       // Misc
       loading: "Loading...",
@@ -342,6 +348,12 @@ export const translations = {
       invalidMobile: "कृपया एक वैध 10-अंकीय मोबाइल नंबर दर्ज करें",
       totalPaid: "कुल भुगतान",
       totalPending: "कुल बकाया",
+      payNow: "अभी भुगतान करें",
+      paymentRecorded: "भुगतान सफलतापूर्वक दर्ज हुआ!",
+      paymentError: "भुगतान दर्ज करने में विफल",
+      scanOrClick: "QR स्कैन करें या भुगतान ऐप खोलने के लिए क्लिक करें",
+      processing: "प्रोसेसिंग...",
+      amount: "राशि",
       
       // Misc
       loading: "लोड हो रहा है...",
